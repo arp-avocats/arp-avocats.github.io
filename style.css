@@ -657,16 +657,10 @@ ul{
 
 
 #expertises{
-    min-height: 0px;
-    margin-bottom: 150px;
+    min-height: calc(100vh - 102px);
+    margin-bottom: 0px;
 }
 
-@media (min-width: 767px){
-    #expertises{
-        min-height: calc(100vh - 102px);
-        margin-bottom: 0px;
-    }
-}
 
 #expertises-text{
     text-align: center;
@@ -754,6 +748,7 @@ ul{
 
     #expertises{
         margin-bottom: 50px;
+        min-height: 0px;
     }
 
     #box-1{

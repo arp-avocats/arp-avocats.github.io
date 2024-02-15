@@ -13,6 +13,21 @@ window.addEventListener('scroll', function() {
 
 
 
+const menuHamburger = document.querySelector(".menu-hamburger");
+const navLinks = document.querySelector(".menu");
+const links = document.querySelectorAll(".menu a");
+
+menuHamburger.addEventListener('click', () => {
+  navLinks.classList.toggle('mobile-menu');
+});
+
+links.forEach(link => {
+  link.addEventListener('click', () => {
+    navLinks.classList.remove('mobile-menu');
+  });
+});
+
+
 
 document.addEventListener('DOMContentLoaded', function () {
     const overlay = document.getElementById('overlay');
@@ -48,6 +63,34 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     };
 });
+
+window.addEventListener('resize', function() {
+    var buttonContent = "23 rue Pierre Fontaine<br>75009 Paris";
+    var googleMapsURL = "https://maps.google.com/maps?q=23%20rue%20Pierre%20Fontaine%2C%2075009%2C%20Paris&amp;output=embed&amp;z=14";
+
+    if (window.innerWidth <= 900) {
+        var buttonElement = document.getElementById('mapBtn');
+        if (buttonElement.tagName.toLowerCase() === 'button') {
+            var anchorElement = document.createElement('a');
+            anchorElement.href = googleMapsURL;
+            anchorElement.target = "_blank";
+            anchorElement.innerHTML = buttonContent;
+            buttonElement.parentNode.replaceChild(anchorElement, buttonElement);
+        }
+    } else {
+        var anchorElement = document.getElementById('mapBtn');
+        if (anchorElement.tagName.toLowerCase() === 'a') {
+            var buttonElement = document.createElement('button');
+            buttonElement.id = 'mapBtn';
+            buttonElement.className = 'categories';
+            buttonElement.innerHTML = buttonContent;
+            anchorElement.parentNode.replaceChild(buttonElement, anchorElement);
+        }
+    }
+});
+
+// Fire the event listener on page load
+window.dispatchEvent(new Event('resize'));
 
 
 

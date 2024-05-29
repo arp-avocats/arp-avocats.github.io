@@ -94,30 +94,70 @@ window.dispatchEvent(new Event('resize'));
 
 
 
-window.addEventListener('scroll', function() {
-    const elements = document.querySelectorAll('.animate-on-scroll');
-    elements.forEach(function(element) {
-        if (isElementInViewport(element, 0.05)) { // Modifier ici le seuil de visibilité
-            element.classList.add('animated');
-        }
-    });
-});
 
-function isElementInViewport(el, visiblePercentage) {
-    const rect = el.getBoundingClientRect();
-    const windowHeight = window.innerHeight || document.documentElement.clientHeight;
-    
-    const visibleHeight = Math.min(rect.bottom, windowHeight) - Math.max(rect.top, 0);
-    const visiblePercent = visibleHeight / rect.height;
 
-    return visiblePercent >= visiblePercentage;
+
+function updateScrollButtonsVisibility() {
+    const container = document.querySelector('.other-expertises');
+    const leftButton = document.querySelector('.navigation-left');
+    const rightButton = document.querySelector('.navigation-right');
+
+    leftButton.hidden = container.scrollLeft === 0; // Masque le bouton de gauche si le défilement est à gauche
+    rightButton.hidden = container.scrollLeft >= container.scrollWidth - container.clientWidth; // Masque le bouton de droite si le défilement est à droite ou à la fin
 }
 
 
+function smoothScrollTo(container, target, duration) {
+    const start = container.scrollLeft;
+    const distance = target - start;
+    const startTime = performance.now();
+
+    function step() {
+        const currentTime = performance.now();
+        const progress = Math.min((currentTime - startTime) / duration, 1);
+        container.scrollLeft = start + distance * progress;
+
+        if (progress < 1) {
+            requestAnimationFrame(step);
+        }
+    }
+
+    requestAnimationFrame(step);
+}
+
+function scrollContainerLeft() {
+    const container = document.querySelector('.other-expertises');
+    smoothScrollTo(container, container.scrollLeft - 1000, 800); // Ajuste la valeur pour contrôler la quantité de défilement et la durée de l'animation
+}
+
+function scrollContainerRight() {
+    const container = document.querySelector('.other-expertises');
+    smoothScrollTo(container, container.scrollLeft + 1000, 800); // Ajuste la valeur pour contrôler la quantité de défilement et la durée de l'animation
+}
+
+// Écouteur d'événement pour mettre à jour la visibilité des boutons lors du défilement
+document.querySelector('.other-expertises').addEventListener('scroll', updateScrollButtonsVisibility);
+
+// Appelle la fonction pour mettre à jour la visibilité des boutons au chargement de la page
+updateScrollButtonsVisibility();
 
 
 
+function updateScrollButtonsVisibility() {
+    const container = document.querySelector('.other-expertises');
+    const leftButton = document.querySelector('.navigation-left');
+    const rightButton = document.querySelector('.navigation-right');
 
+    if (container.scrollLeft === 0) {
+        leftButton.classList.add('hidden');
+    } else {
+        leftButton.classList.remove('hidden');
+    }
 
-
+    if (container.scrollLeft >= container.scrollWidth - container.clientWidth) {
+        rightButton.classList.add('hidden');
+    } else {
+        rightButton.classList.remove('hidden');
+    }
+}
 
